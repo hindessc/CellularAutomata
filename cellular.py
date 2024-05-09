@@ -64,30 +64,26 @@ adjacencies = [
     , [1, 1]   
     ]
 
-while True:
-    response = input("Enter either the file name containg the rules, or the rules in the form \"B??/S??\", replacing the question marks with numbers: ")
-    ruleset = ""
-    if response == ":q":
-        sys.exit()
-    elif not response.endswith(".txt"):
-        ruleset = response
+def getRuleset(key):
+    if not key.endswith(".txt"):
+        ruleset = key
     else:
-        with open(response) as file:
+        with open(key) as file:
             ruleset = file.read()
 
-    born = []
-    survive = []
-
     for rule in ruleset.split("/"):
-        print(rule)
         match rule[0]:
             case 'B':
                 born = list(map(int, rule[1:]))
             case 'S':
                 survive = list(map(int, rule[1:]))
             case _:
-                raise ValueError("Invalid ruleset")
-
+                print("Invalid ruleset")
+                born, survive = None
+    return ruleset, born, survive
+    
+while True:
+    ruleset, born, survive = getRuleset(input("Enter a ruleset: "))
     curr = []
     for i in range(HEIGHT):
         msg = []
@@ -96,12 +92,22 @@ while True:
         curr.append(msg)
 
     while True:
-        match input().split():
-            case [":q"]:
-                break
-            case [":r"]:
+        match input().lower().split():
+            case [":q"] | [":quit"]:
+                sys.exit()
+            case [":h"] | [":help"] | ["help"]:
+                print("Your options are:\n"
+                      ":h to brin up this help menu\n"
+                      ":q to quit\n"
+                      ":p to print the current ruleset\n"
+                      ":r <ruleset> to update the current ruleset\n"
+                      ":a <number> to add a number of rooms"
+                      )
+            case [":p" ] | [":printruleset"]:
                 print(ruleset)
-            case [":w", path]:
+            case [":r", rule] | [":updateruleset", rule]:
+                ruleset, born, survive = getRuleset(rule)
+            case [":w", path] | [":write", path]:
                 try:
                     with open(path.strip(), "x") as file:
                         file.write(ruleset)
