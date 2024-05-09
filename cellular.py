@@ -98,6 +98,7 @@ while True:
             case [":h"] | [":help"] | ["help"]:
                 print("Your options are:\n"
                       ":h to brin up this help menu\n"
+                      "press enter to update the state of the system"
                       ":q to quit\n"
                       ":p to print the current ruleset\n"
                       ":r <ruleset> to update the current ruleset\n"
