@@ -101,6 +101,7 @@ while True:
                       ":q to quit\n"
                       ":p to print the current ruleset\n"
                       ":r <ruleset> to update the current ruleset\n"
+                      ":w <filepath> to write the current ruleset to a file\n"
                       ":a <number> to add a number of rooms"
                       )
             case [":p" ] | [":printruleset"]:
